@@ -32,8 +32,6 @@ requirements:
     - openjdk >=8
 
 test:
-  imports:
-    - tabula
   requires:
     - pip
   commands:
