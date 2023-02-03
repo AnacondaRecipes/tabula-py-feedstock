@@ -15,7 +15,7 @@ build:
   # openjdk >=8 isn't available on ppc64le, s390x, and arm64
   skip: True  # [ppc64le or s390x or arm64]
   script:
-    - python -m pip install --no-deps --ignore-installed --use-feature=in-tree-build .
+    - python -m pip install --no-deps --ignore-installed .
 
 requirements:
   host:
