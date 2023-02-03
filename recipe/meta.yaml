@@ -23,6 +23,7 @@ requirements:
     - pip
     - setuptools
     - setuptools_scm
+    - wheel
   run:
     - python
     - pandas >=0.25.3
