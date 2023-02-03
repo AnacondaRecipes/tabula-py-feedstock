@@ -12,7 +12,7 @@ source:
 build:
   number: 0
   skip: True  # [py<37]
-  # openjdk >=8 isn't available on ppc64le, s390x, and arm64
+  # openjdk >=8 isn't available on ppc64le, s390x
   skip: True  # [ppc64le or s390x]
   script:
     - python -m pip install --no-deps --ignore-installed .
