@@ -27,7 +27,7 @@ requirements:
   run:
     - python
     - pandas >=0.25.3
-    - {{ pin_compatible('numpy') }}
+    - numpy
     - distro
     - openjdk >=8
 
