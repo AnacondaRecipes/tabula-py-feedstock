@@ -5,3 +5,4 @@ import tabula
 if 'windir' not in os.environ:
     # Read remote pdf into DataFrame
     df2 = tabula.read_pdf("https://github.com/tabulapdf/tabula-java/raw/master/src/test/resources/technology/tabula/arabic.pdf")
+    print("Read a remote pdf into DataFrame successfully!")
