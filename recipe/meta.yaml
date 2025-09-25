@@ -21,6 +21,7 @@ requirements:
     - pip
     - setuptools >=45
     - setuptools-scm >=6.2
+    - toml
   run:
     - python
     - pandas >=0.25.3
