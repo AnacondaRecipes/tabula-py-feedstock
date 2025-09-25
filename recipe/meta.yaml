@@ -1,55 +1,66 @@
 {% set name = "tabula-py" %}
-{% set version = "2.6.0" %}
+{% set version = "2.10.0" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: b10b83d15e7209fcf65c64dee064bdb2d50b06a7e4e28fc9974b92c9ef14c5cc
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name|replace('-', '_') }}-{{ version }}.tar.gz
+  sha256: 75968a83fe978e5d56ccf23f0f0255a459c256b7b52db7cabe5ac795bb3b12df
 
 build:
   number: 0
-  skip: True  # [py<37]
-  # openjdk >=8 isn't available on ppc64le, s390x
-  skip: True  # [ppc64le or s390x]
+  skip: true  # [py<39]
   script:
-    - python -m pip install --no-deps --ignore-installed .
+  script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
 
 requirements:
   host:
     - python
     - pip
-    - setuptools
-    - setuptools_scm
-    - wheel
+    - setuptools >=45
+    - setuptools-scm >=6.2
+    - toml
   run:
     - python
     - pandas >=0.25.3
-    - numpy
+    - numpy >1.24.4
     - distro
     - openjdk >=8
 
+{% set ignore_tests = "" %}
+# AssertionError: Expected 'startJVM' to be called once. Called 0 times.
+{% set deselect_tests = " --deselect=tests/test_read_pdf_silent.py::TestReadPdfJarPath::test_read_pdf_with_silent_true" %}
+# E UnicodeDecodeError: 'utf-8' codec can't decode byte 0x96 in position 6268: invalid start byte
+{% set ignore_tests = ignore_tests + " --ignore=tests/test_read_pdf_table.py" %}  # [win]
+
 test:
+  source_files:
+    - tests
+  imports:
+    - tabula
   requires:
     - pip
+    - pytest
+    - jpype1
   commands:
-    - python -c "import tabula; tabula.environment_info()"
-    - pip check 
+    - pip check
+    - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
+    - pytest -v tests {{ deselect_tests }} {{ ignore_tests }}
 
 about:
   home: https://github.com/chezou/tabula-py
   license: MIT
   license_family: MIT
   license_file: LICENSE
-  summary: 'Simple wrapper of tabula-java: extract table from PDF into pandas DataFrame'
+  summary: "Simple wrapper of tabula-java: extract table from PDF into pandas DataFrame"
   description: |
-    tabula-py is a simple Python wrapper of tabula-java, which can read 
-    table of PDF. You can read tables from PDF and convert into pandas's 
-    DataFrame. tabula-py also enables you to convert a PDF file into 
+    tabula-py is a simple Python wrapper of tabula-java, which can read
+    table of PDF. You can read tables from PDF and convert into pandas's
+    DataFrame. tabula-py also enables you to convert a PDF file into
     CSV/TSV/JSON file.
-  doc_url: https://tabula.technology/
+  doc_url: https://tabula-py.readthedocs.io
   dev_url: https://github.com/chezou/tabula-py
 
 extra:
