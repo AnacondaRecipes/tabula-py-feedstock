@@ -1,26 +1,25 @@
 {% set name = "tabula-py" %}
-{% set version = "2.10.0" %}
+{% set version = "2.11.0" %}
 
 package:
-  name: {{ name|lower }}
+  name: {{ name }}
   version: {{ version }}
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name|replace('-', '_') }}-{{ version }}.tar.gz
-  sha256: 75968a83fe978e5d56ccf23f0f0255a459c256b7b52db7cabe5ac795bb3b12df
+  sha256: e4a82125ecf709b1eed4b6723eb613001ead6e38d76b6274983aa1eb41e7a377
 
 build:
   number: 0
-  skip: true  # [py<39]
-  script:
+  skip: true  # [py<311]
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
 
 requirements:
   host:
     - python
     - pip
-    - setuptools >=45
-    - setuptools-scm >=6.2
+    - setuptools >=77
+    - setuptools-scm >=8
     - toml
   run:
     - python
